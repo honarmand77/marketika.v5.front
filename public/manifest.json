@@ -1,0 +1,22 @@
+{
+  "short_name": "marketika",
+  "name": "marketika",
+  "icons": [
+    {
+      "src": "./marketika.svg",
+      "type": "image/svg",
+      "sizes": "192x192"
+    },
+    {
+      "src": "./marketika.svg",
+      "type": "image/svg",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "/",
+  "display": "fullscreen",
+  "theme_color": "#ffffff",
+  "background_color": "#ffffff",
+  "dir": "rtl",
+  "lang": "fa"
+}

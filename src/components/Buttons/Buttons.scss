@@ -1,0 +1,177 @@
+.Buttons-Container{
+    z-index:2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 5px;
+    border: none;
+    background-color: transparent;
+    border-radius: 5px;
+    padding: 10px;
+    cursor: pointer;
+    font-size: .9em;
+    font-family: yekan;
+    margin: 5px;
+    color: #444;
+    user-select: none;
+
+    span{
+        width: 25px;
+        height: 25px;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    strong{
+
+        text-align: center;
+    }
+    &:hover{
+        background: #ffa05c50;
+    }
+
+    &.MenuIcon{
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        padding: 0;
+        justify-content: center;
+        padding: 5px 8px;
+        transition: transform 0.3s ease-in-out,  0.3s ease-in-out;
+            strong{
+                display: none;
+            }
+ 
+            &:hover{
+                background: #ffffff90;
+                -webkit-backdrop-filter: blur(10px);
+                backdrop-filter: blur(10px);
+            }
+        
+
+        &.active{
+            background: linear-gradient(45deg, #FFA05C, #FF7B54);
+
+        }
+    }
+    &.ShortcutButtons{
+        width: 35px;
+        height: 35px;
+        display: flex;
+        align-items: center;
+        padding: 0;
+        justify-content: center;
+        position: relative;
+        padding: 5px 8px;
+      
+        transition: transform 0.3s ease-in-out,  0.3s ease-in-out;
+            strong{
+                display: none;
+            }
+ 
+            &:hover{
+                background: #ffffff90;
+                -webkit-backdrop-filter: blur(10px);
+                backdrop-filter: blur(10px);
+            }
+        
+        &:active{
+            transform: scale(0.9);
+            transition: .1s;
+
+        }
+        &.active{
+            background: linear-gradient(45deg, #FFA05C, #FF7B54);
+        }
+
+        @media (max-width: 768px) {
+            cursor: none;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #FFA05C, #FF7B54);
+            width: 35px;
+            height: 35px;
+            svg{
+                color:#fff;
+            
+                }
+        }
+    }
+    &.ArrowIcon{
+        width: 25px;
+        height: 25px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 5px;
+            strong{
+                display: none;
+            }
+ 
+
+    }
+
+
+    &.HeaderButtons{
+        position: relative;
+        transition: .3s;
+        padding: 5px 15px;
+        border-radius: 3px;
+        border-top:1px solid transparent;
+        span{
+            scale: .8;
+            
+        }
+        &.active{
+            color: #f9f9f9;
+            background: linear-gradient(45deg, #FFA05C, #FF7B54);
+            border-top:1px solid #FFA05C;
+        }
+        &:hover{
+            color: #f9f9f9;
+            background: linear-gradient(45deg, #FFA05C99, #FF7B5499);
+            border-top:1px solid #FFA05C;
+            transform: translateY(-5px);
+            transition: .3s;
+        }
+    
+        @media (max-width: 768px) {
+            cursor: none;
+            display: flex;
+            padding: 5px;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            width: 45px;
+            height: 45px;
+
+            strong{
+                display: none;
+            }
+            &.active{
+                color: #f9f9f9;
+                background: linear-gradient(45deg, #FFA05C, #FF7B54);
+                border-top:1px solid #FFA05C;
+                transform: translateY(-5px);
+
+            }
+            &:hover{
+                color: #f9f9f9;
+                background: linear-gradient(45deg, #FFA05C, #FF7B54);
+                border-top:1px solid #FFA05C;
+                transform: translateY(-5px);
+                transition: .3s;
+            }
+        }
+    }
+    @media (max-width: 768px) {
+        cursor: none;
+        display: grid;
+        padding: 10px;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+    }
+}

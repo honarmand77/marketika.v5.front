@@ -1,0 +1,151 @@
+.Inputs-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+
+
+    input{
+        width: 100%;
+        height: 100%;
+        background: transparent;
+        border: none;
+        outline: none;
+        font-size: .9em;
+        font-family: yekan;
+    }
+    span{
+        width: 20px;
+        height: 20px;
+    }
+}
+
+.Inputs{
+    background: transparent;
+    position: relative;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    @media (max-width: 768px) {
+        padding: 10px;
+        height: 45px;
+        z-index: 2;
+        margin: auto;
+
+
+    }
+    .search{
+    width: 25vw;
+    height: 2rem;
+    padding: 10px;
+    border-radius: 50px;
+    gap: 10px;
+    background: #ffffff80;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    span{
+        width: 25px;
+        height: 25px;
+display: flex;
+align-items: center;
+justify-content: center;
+    }
+    @media (max-width: 768px) {
+    height: 2rem;
+    width: 50vw;
+
+
+        span{
+            width: 20px;
+            height: 20px;
+    display: flex;
+align-items: center;
+justify-content: center;
+        }
+    }
+}
+/* کلیت استایل‌های ورودی‌ها */
+.file, .number, .text, .email {
+    border: 2px solid #ffa08c;
+    border-radius: 50px;
+    padding: 10px 20px;
+    background: #ffffff40; /* گرادیانت ملایم برای پس‌زمینه */
+    transition: all 0.3s ease-in-out; /* انتقال ملایم برای انیمیشن‌ها */
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.file input[type="file"]::-webkit-file-upload-button {
+    visibility: hidden;
+
+}
+.file input[type="file"] {
+    position: relative;
+    opacity: 0;
+    cursor: pointer;
+
+}
+
+.file::before {
+    content: "انتخاب فایل..."; /* متن دلخواه شما به جای 'No file chosen' */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50%;
+    height: 100%;
+    background: #ffa08c;
+    color: white;
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: bold;
+    text-align: center;
+    z-index: 0;
+    position: absolute;
+    left: 0;
+}
+
+.file:hover::before {
+    background: #814bff; /* تغییر رنگ هنگام هاور */
+    z-index: 0;
+
+}
+
+
+/* مخفی کردن آیکون‌های عددی (up/down) */
+.number input[type="number"]::-webkit-outer-spin-button,
+.number input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* حذف گوشه‌های ورودی‌ها */
+.file:hover, .number:hover, .text:hover,  .email:hover{
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* سایه ملایم برای جلوه‌ها */
+    border-color: #814bff; /* تغییر رنگ مرز در هنگام هاور */
+    background: #ffffff70; /* تغییر پس‌زمینه در هاور */
+}
+
+.file:focus, .number:focus, .text:focus, .email:focus {
+    outline: none;
+    border-color: #814bff; /* تغییر رنگ مرز هنگام فوکوس */
+    box-shadow: 0 0 5px rgba(129, 75, 255, 0.7); /* سایه هنگام فوکوس */
+}
+
+/* برای ورودی‌ها در موبایل */
+@media (max-width: 768px) {
+    .file, .number, .text {
+        height: 2.5rem;
+        padding: 5px 10px;
+    }
+
+    .file span, .number span, .text span {
+        width: 18px;
+        height: 18px;
+    }
+}
+
+}

@@ -1,0 +1,274 @@
+@font-face {
+  font-family: yekan;
+  src: url("./assets/fonts/Yekan.ttf") format('truetype');
+  font-display: swap;
+}
+
+
+
+*{
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: "yekan";
+  &::-webkit-scrollbar {
+    width:5px;
+    height: 5px;
+    background-color: #fff;
+}
+
+&::-webkit-scrollbar-thumb {
+    background-color: #FFA05C95;
+
+
+}
+}
+
+
+body.dark{
+  font-size: clamp(.4rem, 2vw, .6rem);
+  overflow: hidden;
+  background: #393939;
+  transition: .5s;
+
+  *{
+    color: #fff;
+    &::-webkit-scrollbar-track {
+      width:5px;
+      height: 5px;
+      background-color: #444;
+  }
+  }
+}
+body{
+  font-size: clamp(.4rem, 2vw, .6rem);
+  overflow: hidden;
+  background: #FFA05C10;
+*, label, button, div, p, h1, h2, h3, h4, h5, h6, .MuiButtonBase-root, .MuiTypography-root{
+  font-family: "yekan";
+  letter-spacing:0;
+}
+}
+
+
+.swiper-slide {
+  font-size: 18px;
+  height: auto;
+  width: auto;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  padding: 30px;
+}
+
+.mySwiper{
+    width:100vw;
+height:max-content;
+}
+.horcat{
+height:350px;
+  @media (max-width: 780px){
+    width:100vw;
+height:max-content;
+
+  }
+.horcatch{
+display: flex;
+flex-direction: row;
+height:max-content;
+button{
+  overflow: visible;
+}
+.css-1br6dhg{
+  display: flex;
+  flex-direction: column;
+}
+}
+}
+body.dark{
+  .HeaderButtons{
+      background: #444444;
+      border: 1px solid #44444450;
+  }
+}
+body.dark{
+  .logo{
+      fill: #fff;
+  }
+}
+body.dark{
+  .CategoryCard{
+    box-shadow: 0 0 10px -5px #00000050;
+
+  }
+}
+body.dark{
+  .ProductCard{
+    box-shadow: 0 0 10px -5px #00000050;
+
+  }
+}
+body.dark{
+  .search{
+    background: #444444;
+    border: 1px solid #44444450;
+}}
+
+body.dark{
+  .StepContainer {
+    &:hover *{
+      color: #444;
+    }
+}}
+
+body.dark{
+  .Tabs_Container {
+      background: #44444410;
+      button{
+      }
+}}
+
+body.dark{
+  .FavoriteStar {
+      color: #444444;
+
+}}
+
+  body.dark{
+    .Card {
+      background: #333;
+      &:hover{
+        transform: translateY(-4px);
+        background:linear-gradient(45deg, #FFA05C, #FF7B54);
+      }
+    }}
+    body{
+      .Card {
+        transition: height 5s;
+        border-radius: 10px;
+        background: #fcfcfc;
+        margin: 5px;
+        &:hover{
+          transform: translateY(-4px);
+          background:linear-gradient(45deg, #FFA05C, #FF7B54);
+        }
+      }}
+  
+  body{
+    .smallCard {
+        position: relative;
+        max-height: max-content;
+        box-shadow: "none";
+        padding: 10px;
+        background: #fcfcfc;
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+        width:450px;
+        transition: transform 0.2s, box-shadow 0.2s;
+        box-shadow: 0 0 10px 0 #77777710;
+
+        .img{
+          width: 120px;
+          height: 120px;
+          img{
+          height: 120px;
+          width: 120px;
+          }
+        }
+        &:hover{
+          transform: translateY(-4px);
+          background-color:#FFA05C50;
+
+          >:nth-child(3){
+              *{
+                color:"#fff",
+              }}}
+              @media (max-width: 768px) {
+                width:400px;
+            
+              }
+            }
+  }
+  body.dark{
+    .smallCard {
+      background: #333;
+      &:hover{
+        transform: translateY(-4px);
+        background:linear-gradient(45deg, #FFA05C, #FF7B54);
+      }
+    }}
+  body.dark{
+    .subcard {
+      background:#fcfcfc;
+      *{
+        color:#444;
+      }
+      &:hover{
+        background: #bb8f6f;
+        *{
+          color:#fff;
+        }
+      }
+    }}
+    body.dark{
+      .AuthStep {
+       background-color: #333;
+      }}
+
+
+      body{
+        .scroller{
+          overflow:hidden;
+          overflow-y: scroll;
+          position: relative;
+
+          &::-webkit-scrollbar {
+            width: 5px;
+            background: #eee;
+          }
+        
+          &::-webkit-scrollbar-thumb {
+            background-color: #ffa05c;
+          }
+          
+        }
+        .scroller.in {
+
+          transform: translateY(-25dvh);       
+          transition:.3s ease;
+          border-radius: 10px;
+        }
+        
+        .scroller.out {
+          transition: .3s ease;
+
+        }}
+
+        body.dark{
+          .scroller.in {
+            transform: translateY(-25dvh);
+            transition:.3s ease;
+          }
+          
+          .scroller.out {
+            transition: .3s ease;
+          }}
+
+
+          body.dark{
+          .filter{
+            background-color: #444;
+          }  
+          }
+
+
+          body{
+            .SwiperCard{
+              max-width: 250px;
+              @media (max-width: 768px) {
+                max-width: 200px;
+            
+              }
+            }  
+            }
+          

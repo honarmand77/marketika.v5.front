@@ -1,0 +1,10 @@
+
+    .App{
+        display: grid;
+        margin: auto;
+       
+        *{
+            font-family: "yekan";
+          }
+    }
+  
