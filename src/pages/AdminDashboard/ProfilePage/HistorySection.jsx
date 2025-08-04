@@ -13,7 +13,7 @@ import {
   Paper,
 } from '@mui/material';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
-import { fetchOrderHistoryForAdmin } from '../../../api/orders'; // import the new function
+import { getAllOrders } from '../../../api/orders'; // import the new function
 import Loader from '../../../components/Loader/Loader';
 
 const HistorySection = () => {
@@ -24,7 +24,7 @@ const HistorySection = () => {
   useEffect(() => {
     const getData = async () => {
       try {
-        const historyData = await fetchOrderHistoryForAdmin(); // استفاده از تابع جدید
+        const historyData = await getAllOrders(); // استفاده از تابع جدید
         setOrderHistory(historyData);
       } catch (error) {
         console.error("خطا در دریافت تاریخچه سفارشات:", error);

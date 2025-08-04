@@ -1,15 +1,17 @@
-import React from 'react'
-import Home from '../pages/Home/Home';
-import Products from '../pages/Products/Products';
-import Search from '../pages/Search/Search';
-import OverviewPage from '../pages/AdminDashboard/OverviewPage/OverviewPage';
-import ManagementPage from '../pages/AdminDashboard/ManagementPage/ManagementPage';
-import SettingPage from '../pages/AdminDashboard/SettingPage/SettingPage';
-import ProfilePage from '../pages/AdminDashboard/ProfilePage/ProfilePage';
-import Auth from '../pages/auth/Auth';
-import Profile from '../pages/Profile/Profile';
-import ProductPage from '../components/ProductPage/ProductPage';
-import Cart from '../pages/Cart/Cart';
+import React, { lazy } from "react";
+
+const Products = lazy(()=> import('../pages/Products/Products'));
+const Home = lazy(()=> import('../pages/Home/Home'));
+const OverviewPage = lazy(()=> import('../pages/AdminDashboard/OverviewPage/OverviewPage'));
+const Search = lazy(()=> import('../pages/Search/Search'));
+const ManagementPage = lazy(()=> import('../pages/AdminDashboard/ManagementPage/ManagementPage'));
+const SettingPage = lazy(()=> import('../pages/AdminDashboard/SettingPage/SettingPage'));
+const ProfilePage = lazy(()=> import('../pages/AdminDashboard/ProfilePage/ProfilePage'));
+const Auth = lazy(()=> import('../pages/auth/Auth'));
+const Profile = lazy(()=> import('../pages/Profile/Profile'));
+const ProductPage = lazy(()=> import('../components/ProductPage/ProductPage'));
+const Cart = lazy(()=> import('../pages/Cart/Cart'));
+const Checkout = lazy(()=> import('../pages/Checkout/Checkout'));
 
 
 
@@ -52,8 +54,11 @@ export const routes =  [
   path: 'cart',
   component: <Cart/>
 
-},
+},{
+  path: 'Checkout',
+  component: <Checkout/>
 
+}
 
 ]
 

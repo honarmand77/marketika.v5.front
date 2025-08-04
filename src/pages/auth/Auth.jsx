@@ -258,7 +258,7 @@ const handleOtpChange = (e, index) => {
           onClick={step === 1 ? handleNext : handleLogin}
           disabled={loading}
           endIcon={loading ? <CircularProgress size={20} /> : null}
-          sx={{color:"#fff",background:'linear-gradient(45deg, #FFA05C, #FF7B54)',boxShadow:"none"}}
+          sx={{color:"#fff",background:' #52575D',boxShadow:"none"}}
         >
           {loading 
             ? step === 1 
@@ -497,7 +497,7 @@ function MultiStepSignin({ setIsSignup }) {
           disabled={loading}
           endIcon={loading ? <CircularProgress size={20} /> : null}
           fullWidth={window.innerWidth < 600}
-          sx={{color:"#fff",background:'linear-gradient(45deg, #FFA05C, #FF7B54)',boxShadow:"none"}}
+          sx={{color:"#fff",background:' #52575D',boxShadow:"none"}}
 
         >
           {loading 

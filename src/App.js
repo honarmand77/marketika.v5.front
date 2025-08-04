@@ -1,5 +1,5 @@
 import './App.css';
-import React, { useEffect, useCallback, Suspense } from "react";
+import React, { useEffect, useCallback, Suspense, lazy } from "react";
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Footer from './components/Footer/Footer';
 import LocationTracker from './components/LocationTracker/LocationTracker';
@@ -13,9 +13,11 @@ import { fetchBanners } from './redux/reducers/bannersSlice';
 import { fetchProducts } from './redux/reducers/productsSlice';
 import { fetchCategories } from './redux/reducers/categoriesSlice';
 import { loadUserFromStorage } from './redux/reducers/authSlice';
+import { fetchBrands } from './redux/reducers/brandsSlice';
+
 
 // Lazy load heavy components
-const AdminDashboard = React.lazy(() => import('./pages/AdminDashboard/AdminDashboard'));
+const AdminDashboard = lazy(() => import('./pages/AdminDashboard/AdminDashboard'));
 
 // Lazy imports for secondary data
 const fetchSubcategories = () => import('./redux/reducers/subcategoriesSlice')
@@ -38,18 +40,22 @@ function App() {
     try {
       // Critical data (render-blocking)
       await Promise.all([
+        dispatch(fetchBanners()),
         dispatch(fetchProducts()),
         dispatch(fetchCategories()),
-        dispatch(loadUserFromStorage())
       ]);
       
       // Secondary data (non-blocking)
       setTimeout(async () => {
-        dispatch(fetchBanners());
         dispatch((await fetchSubcategories())());
-        dispatch((await fetchCart(user?.id))());
+        dispatch(fetchBrands());
       }, 100);
       
+      setTimeout(async () => {
+        dispatch(loadUserFromStorage())
+        dispatch((await fetchCart(user?.id))());
+      }, 300);
+
     } catch (error) {
       console.error("Initial data loading failed:", error);
     }
@@ -70,7 +76,11 @@ function App() {
             <Route 
               key={route.path} 
               path={route.path} 
-              element={route.component} 
+              element={ 
+              <Suspense fallback={<Loader />}>
+                {route.component}
+              </Suspense>
+              } 
               errorElement={route.errorElement} 
             />
           ))}

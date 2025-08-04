@@ -13,7 +13,7 @@ import {
   Paper,
 } from '@mui/material';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
-import { fetchPendingOrdersForAdmin } from '../../../api/orders'; // import the new function
+import { getOrderInvoice } from '../../../api/orders'; // import the new function
 import Loader from '../../../components/Loader/Loader';
 
 const OrdersSection = () => {
@@ -24,7 +24,7 @@ const OrdersSection = () => {
   useEffect(() => {
     const getData = async () => {
       try {
-        const pendingData = await fetchPendingOrdersForAdmin(); // استفاده از تابع جدید
+        const pendingData = await getOrderInvoice(); // استفاده از تابع جدید
         setPendingOrders(pendingData);
       } catch (error) {
         console.error("خطا در دریافت سفارشات در حال انتظار:", error);

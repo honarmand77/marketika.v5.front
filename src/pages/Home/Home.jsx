@@ -19,10 +19,10 @@ const Home = () => {
     <HomeContainer  className="scroller" ref={scrollerRef}>
     <BannerSlider/>
     <ProductSwiper/>
-    <InfiniteScrollProducts/>
     <ProductSections/>
-    <BrandsCarousel/>
     <AppDownloadSection/>
+    <InfiniteScrollProducts/>
+    <BrandsCarousel/>
     <OrderingProcess/>
     </HomeContainer>
 

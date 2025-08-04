@@ -1,25 +1,15 @@
 import styled, { keyframes } from "styled-components";
 
-const slideIn3D = keyframes`
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-`;
-
 export const ProfileContainer = styled.div`
   gap: 30px;
   width: 100%;
   display: grid;
   overflow:hidden;
   overflow-y: scroll;
-  align-items:flex-start;
+  align-items:center;
   justify-content:center;
   margin:0;
   height: calc(100dvh - 100px);
-  animation: ${slideIn3D} 1s ease-out;
 
   &::-webkit-scrollbar {
     width: 5px;
@@ -31,7 +21,7 @@ export const ProfileContainer = styled.div`
   }
 
   @media (max-width: 768px) {
-    height: calc(100dvh - 130px);
+    height: calc(100dvh - 100px);
   gap: 10px;
 
   }

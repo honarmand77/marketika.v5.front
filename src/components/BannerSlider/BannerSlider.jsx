@@ -34,7 +34,7 @@ export default function BannerSlider() {
           key={index}
           sx={{
             width: '100%',
-            height:isMobile ? '200px' : '450px',
+            height: isMobile ? '200px' : '450px',
             backgroundColor: '#cccccc50',
             borderRadius:"10px"
           }}
@@ -49,6 +49,8 @@ export default function BannerSlider() {
         alt={`banner-${index}`}
         onError={handleImageError}
         crossOrigin="anonymous"
+        placeholder="blur"
+        loading="lazy"
         sx={{
           width: '100%',
           height: isMobile ? '200px' : '450px',
@@ -121,7 +123,6 @@ export function CategoriesContainer({className}) {
             userSelect: "none",
             maxHeight:isMobile ? "120px" : "160px",
             bgcolor:"#ffffff10",
-            transition: "transform 0.2s, box-shadow 0.2s",
             "&:hover": {
               transform: "translateY(-4px)",
             },
@@ -154,15 +155,14 @@ export function CategoriesContainer({className}) {
             alignItems:"flex-start",
             transition: "transform 0.3s, background-color 0.3s",
             userSelect: "none",
-            maxHeight:isMobile ? "150px" : "200px",
-            transition: "transform 0.2s, box-shadow 0.2s",
+            maxHeight:isMobile ? "220px" : "280px",
 
             "&:hover": {
               transform: "translateY(-4px)",
               ".MuiTypography-body2 , svg":{
               color: "#fff",
               },
-              background:"linear-gradient(45deg, #FFA05C, #FF7B54)",
+              background:" #393E46",
                       ">:nth-child(3)":{
                         "*":{
                     color:"#fff",
@@ -177,10 +177,10 @@ export function CategoriesContainer({className}) {
       {category.name || "دسته بندی"}
     </Typography>
     <IconButton
-      sx={{ p: .5, color: "#FFA05C" }}
+      sx={{ p: .5, color: "#393E46" }}
       onClick={() => handleCategoryClick(category.name)}
     >
-      <ArrowBackIcon sx={{ p: .5 , color: "#FFA05C" }}/>
+      <ArrowBackIcon sx={{ p: .5 , color: "#393E46" }}/>
     </IconButton>
   </Box>
   <Box sx={{ display: 'grid', gridTemplateColumns: isMobile ? '.5fr 1fr' : "1fr", background:"#ffffff",height:"100%",borderRadius:"8px",width:"100%", alignItems:"center" }}>
@@ -194,7 +194,8 @@ export function CategoriesContainer({className}) {
                 crossOrigin="anonymous"
                 alt={category.name || "دسته بندی"}
                 onError={handleImageError}
-
+                placeholder="blur"
+                loading="lazy"
                 sx={{ objectFit: 'contain', margin:"auto" }}
               />
                 <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', p: 1 ,height:"100%"}}>
@@ -212,7 +213,7 @@ export function CategoriesContainer({className}) {
                     color:"#444",
                     height:"100%",
                     "&:hover": {
-                      background:"linear-gradient(45deg, #FFA05C, #FF7B54)"
+                      background:"#393E46"
                       ,
                       "*":{
                       color:"#fff",

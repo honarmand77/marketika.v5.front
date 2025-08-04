@@ -29,7 +29,7 @@
         text-align: center;
     }
     &:hover{
-        background: #ffa05c50;
+        background: #393E4690;
     }
 
     &.MenuIcon{
@@ -53,7 +53,7 @@
         
 
         &.active{
-            background: linear-gradient(45deg, #FFA05C, #FF7B54);
+            background:  #393E46;
 
         }
     }
@@ -73,7 +73,7 @@
             }
  
             &:hover{
-                background: #ffffff90;
+                background: #393E4690;
                 -webkit-backdrop-filter: blur(10px);
                 backdrop-filter: blur(10px);
             }
@@ -84,13 +84,13 @@
 
         }
         &.active{
-            background: linear-gradient(45deg, #FFA05C, #FF7B54);
+            background: #393E46;
         }
 
         @media (max-width: 768px) {
             cursor: none;
             border-radius: 50%;
-            background: linear-gradient(45deg, #FFA05C, #FF7B54);
+            background: #393E46;
             width: 35px;
             height: 35px;
             svg{
@@ -126,13 +126,13 @@
         }
         &.active{
             color: #f9f9f9;
-            background: linear-gradient(45deg, #FFA05C, #FF7B54);
-            border-top:1px solid #FFA05C;
+            background:#393E46;
+            border-top:1px solid #393E46;
         }
         &:hover{
             color: #f9f9f9;
-            background: linear-gradient(45deg, #FFA05C99, #FF7B5499);
-            border-top:1px solid #FFA05C;
+            background: #393E46;
+            border-top:1px solid #393E46;
             transform: translateY(-5px);
             transition: .3s;
         }
@@ -152,15 +152,15 @@
             }
             &.active{
                 color: #f9f9f9;
-                background: linear-gradient(45deg, #FFA05C, #FF7B54);
-                border-top:1px solid #FFA05C;
+                background: #393E46;
+                border-top:1px solid #393E46;
                 transform: translateY(-5px);
 
             }
             &:hover{
                 color: #f9f9f9;
-                background: linear-gradient(45deg, #FFA05C, #FF7B54);
-                border-top:1px solid #FFA05C;
+                background:  #393E46;
+                border-top:1px solid #393E46;
                 transform: translateY(-5px);
                 transition: .3s;
             }

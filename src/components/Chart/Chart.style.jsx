@@ -81,7 +81,7 @@ strong{
     strong{
        transform:scale(1.1);
     transition:.5s;
-    background: #FFA05C50;
+    background: #393E4690;
     padding:5px;
     border-radius:5px;
 }

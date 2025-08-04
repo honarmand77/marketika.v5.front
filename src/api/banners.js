@@ -14,7 +14,7 @@ export const bannerData = async () => {
 // Add new banner
 export const addBanner = async (bannerData) => {
   try {
-    if (bannerData instanceof FormData) {
+    if (bannerData) {
       const response = await api.post("banners/add", bannerData, {
         headers: {
           "Content-Type": "multipart/form-data",

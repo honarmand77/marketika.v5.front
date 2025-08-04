@@ -18,7 +18,7 @@
 }
 
 &::-webkit-scrollbar-thumb {
-    background-color: #FFA05C95;
+    background-color: #393E46;
 
 
 }
@@ -43,7 +43,7 @@ body.dark{
 body{
   font-size: clamp(.4rem, 2vw, .6rem);
   overflow: hidden;
-  background: #FFA05C10;
+  background: #52575D10;
 *, label, button, div, p, h1, h2, h3, h4, h5, h6, .MuiButtonBase-root, .MuiTypography-root{
   font-family: "yekan";
   letter-spacing:0;
@@ -58,6 +58,10 @@ body{
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   padding: 30px;
+    @media (max-width: 780px){
+  padding: 10px;
+
+    }
 }
 
 .mySwiper{
@@ -65,7 +69,7 @@ body{
 height:max-content;
 }
 .horcat{
-height:350px;
+height:max-content;
   @media (max-width: 780px){
     width:100vw;
 height:max-content;
@@ -127,29 +131,26 @@ body.dark{
       }
 }}
 
-body.dark{
-  .FavoriteStar {
-      color: #444444;
-
-}}
 
   body.dark{
     .Card {
-      background: #333;
+      background: #333333;
       &:hover{
         transform: translateY(-4px);
-        background:linear-gradient(45deg, #FFA05C, #FF7B54);
+        background: #393E46;
       }
     }}
     body{
       .Card {
         transition: height 5s;
         border-radius: 10px;
-        background: #fcfcfc;
+        background: #fcfcfc20;
         margin: 5px;
+        box-shadow: 0 0 10px 0 #77777710;
+
         &:hover{
           transform: translateY(-4px);
-          background:linear-gradient(45deg, #FFA05C, #FF7B54);
+          background: #52575D;
         }
       }}
   
@@ -159,9 +160,10 @@ body.dark{
         max-height: max-content;
         box-shadow: "none";
         padding: 10px;
-        background: #fcfcfc;
+        background: #fcfcfc20;
         display: flex;
         flex-direction: row;
+        border-radius: 10px;
         gap: 10px;
         width:450px;
         transition: transform 0.2s, box-shadow 0.2s;
@@ -177,7 +179,7 @@ body.dark{
         }
         &:hover{
           transform: translateY(-4px);
-          background-color:#FFA05C50;
+          background-color:#52575D;
 
           >:nth-child(3){
               *{
@@ -194,7 +196,7 @@ body.dark{
       background: #333;
       &:hover{
         transform: translateY(-4px);
-        background:linear-gradient(45deg, #FFA05C, #FF7B54);
+        background: #393E4690;
       }
     }}
   body.dark{
@@ -204,7 +206,7 @@ body.dark{
         color:#444;
       }
       &:hover{
-        background: #bb8f6f;
+        background: #393E4680;
         *{
           color:#fff;
         }
@@ -228,7 +230,7 @@ body.dark{
           }
         
           &::-webkit-scrollbar-thumb {
-            background-color: #ffa05c;
+            background-color: #393E46;
           }
           
         }

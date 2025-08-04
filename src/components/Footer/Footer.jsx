@@ -107,7 +107,7 @@ const Footer = memo(() => {
 
   return (
     <FooterContainer 
-      isOpen={isFooterVisible}
+      $isOpen={isFooterVisible}
       className={`AuthStep ${isFooterVisible ? 'visible' : 'hidden'}`}
     >
       <div className="Footer">

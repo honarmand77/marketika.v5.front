@@ -1,14 +1,5 @@
 import styled, { keyframes } from "styled-components";
 
-const slideIn3D = keyframes`
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-`;
-
 export const AuthContainer = styled.div`
  width: 100%;
   display: grid;
@@ -16,13 +7,12 @@ export const AuthContainer = styled.div`
   justify-content:center;
   margin:0;
   height: calc(100dvh - 10px);
-  animation: ${slideIn3D} 1s ease-out;
   padding-bottom:100px;
 
 
 
   @media (max-width: 768px) {
-    height: calc(100dvh - 130px);
+    height: calc(100dvh - 100px);
   gap: 20px;
 
   }
@@ -31,12 +21,11 @@ export const AuthContainer = styled.div`
 
 export const StepContainer = styled.div`
 background:#fff;
-  border-radius: 5px;
+  border-radius: 10px;
   padding: 40px;
   width: 100%;
   max-width: 450px;
   z-index: 1;
-
 
   span .Mui-active  {
     span{
@@ -45,7 +34,7 @@ background:#fff;
     }
   circle{
 
-      color:  #FF7B54;
+      color:  #52575D;
       cursor: pointer;
       transition: color 0.3s ease;
 

@@ -13,7 +13,7 @@ padding-top:70px;
 right:0;
 top:0;
 transition:.5s;
-z-index:10000;
+z-index:998;
 background:#fff;
 .open{
     display:none;

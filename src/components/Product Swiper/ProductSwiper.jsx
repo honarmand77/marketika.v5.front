@@ -34,7 +34,7 @@ const ProductSwiper = () => {
   const topProducts = getTopProducts();
   return (
     <>
-      <Box sx={{ width: "max-content" }}>
+      <Box sx={{ width: "100%", justifyContent:"center" ,display:"flex" }}>
         <Tabs sx={{ width: "max-content" }} value="محصولات برتر" aria-label="دسته بندی محصولات">
           <Tab label="محصولات برتر" value="محصولات برتر" />
         </Tabs>
@@ -83,19 +83,13 @@ const ProductSwiper = () => {
                 </Stack>
               ))
             ) : (
-              topProducts.map((product) => (
-                <motion.div
-                  key={product._id}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.1 }}
-                >
+              topProducts.map((product , index) => (
                   <ProductCard 
                     ClassName="SwiperCard" 
-                    product={product} 
+                    key={index}
                     loading={loading}
+                    product={product} 
                   />
-                </motion.div>
               ))
             )}
           </Produc_Container>

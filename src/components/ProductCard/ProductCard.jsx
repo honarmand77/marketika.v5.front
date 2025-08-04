@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, useEffect, memo } from "react";
 import {
   CardMedia,
   CardContent,
@@ -12,13 +12,11 @@ import {
   useMediaQuery,
   Chip,
   CircularProgress,
-  Badge,
 } from "@mui/material";
 import {
   Favorite as FavoriteIcon,
   FavoriteBorder as FavoriteBorderIcon,
   ShoppingCart as ShoppingCartIcon,
-  ShoppingCartCheckout as ShoppingCartCheckoutIcon,
   Add as AddIcon,
   Remove as RemoveIcon,
   Delete
@@ -28,85 +26,98 @@ import { useNavigate } from "react-router-dom";
 import { Api_Url } from "../../api";
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleLike } from '../../redux/reducers/productsSlice';
-import { addItemToCart, removeItemFromCart, selectCartItems } from "../../redux/reducers/cartSlice";
-import {selectCartLastUpdated} from '../../redux/reducers/cartSlice';
+import { 
+  addItemToCart, 
+  removeItemFromCart, 
+  selectCartItems
+} from "../../redux/reducers/cartSlice";
 
+// تابع کمکی برای فرمت قیمت
 const formatPrice = (price) => {
-  if (typeof price !== 'number') {
-    price = parseFloat(price) || 0;
-  }
-  return new Intl.NumberFormat('fa-IR').format(price) + ' تومان';
+  const parsedPrice = typeof price === 'number' ? price : parseFloat(price) || 0;
+  return new Intl.NumberFormat('fa-IR').format(parsedPrice) + ' تومان';
 };
 
 const ProductCard = ({ product, loading, ClassName }) => {
+  // Hooks و stateها
   const dispatch = useDispatch();
-  const { user, token } = useSelector(state => state.auth);
-  const cart = useSelector(selectCartItems);
-  const likeLoading = useSelector(state => state.products.loadingStates[product?._id] || false);
-  const cartLoading = useSelector(state => state.cart.cartLoadingStates[product?._id] || false);
-
   const navigate = useNavigate();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  
+  const { user, token } = useSelector(state => state.auth);
+  const cartItems = useSelector(selectCartItems);
+  const cartLoading = useSelector(state => state.cart.cartLoadingStates[product?._id] || false);
+  const likeLoading = useSelector(state => state.products.loadingStates[product?._id] || false);
+  
   const [imageError, setImageError] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [localCartState, setLocalCartState] = useState({
+    isInCart: false,
+    quantity: 0,
+    item: null
+  });
+
+  // مقادیر محاسبه شده
   const isFavorite = product?.likes?.includes(user?.id) || false;
   const likeCount = product?.likes?.length || 0;
+  const productPrice = parseFloat(product?.price?.$numberDecimal || product?.price || 0);
 
+  // محاسبه وضعیت سبد خرید بر اساس تغییرات
+  useEffect(() => {
+    const cartItem = cartItems.find(item => item?.product?._id === product?._id);
+    
+    setLocalCartState({
+      isInCart: !!cartItem,
+      quantity: cartItem?.quantity || 0,
+      item: cartItem || null
+    });
+  }, [cartItems, product?._id]);
 
-const isInCart = cart?.some(item => {
-  const itemProductId = item?.product?._id;
-  const currentProductId = product?._id;
-  return itemProductId === currentProductId;
-});
-const cartItem  = cart?.find(item => {
-  const itemProductId = item?.product?._id;
-  const currentProductId = product?._id;
-  return itemProductId === currentProductId;
-});
-
-const cartQuantity = cartItem ? cartItem.quantity : 0;
-const itemProduct = cart?.find(item => item?.product?._id === product?._id); // More specific find condition
-const totalPrice = itemProduct ? itemProduct.priceAtAddition * itemProduct.quantity : 0;
-const RemovwcartLoading  = useSelector(state => state.cart.itemStatus[itemProduct?._id]);
-
-
-
-
+  // مدیریت علاقه‌مندی‌ها
   const handleLike = useCallback(async (e) => {
     e.stopPropagation();
+    setIsAnimating(true);
     
     if (!token) {
       navigate("/auth");
       return;
     }
 
-    setIsAnimating(true);
-    setTimeout(() => setIsAnimating(false), 500);
 
     try {
       await dispatch(toggleLike({
         productId: product?._id,
         userId: user?.id,
-        currentLikes: product?.likes,
         isCurrentlyLiked: isFavorite
       })).unwrap();
     } catch (error) {
       console.error("خطا در عملیات لایک:", error);
     }
-  }, [product, user?.id, token, navigate, isFavorite, dispatch]);
+    setIsAnimating(false);
 
+  }, [product?._id, user?.id, token, navigate, isFavorite, dispatch]);
+
+  // افزودن به سبد خرید با به‌روزرسانی فوری
   const handleAddToCart = useCallback(async (e) => {
     e.stopPropagation();
     e.preventDefault();
     
-    if (!token) {
-      navigate("/auth");
-      return;
-    }
-
+    if (!token) return navigate("/auth");
     if (cartLoading) return;
     
+    // به‌روزرسانی فوری UI
+    setLocalCartState(prev => ({
+      isInCart: true,
+      quantity: prev.quantity + 1,
+      item: prev.item || { // ایجاد یک آیتم موقت
+        _id: `temp-${Date.now()}`,
+        product,
+        quantity: prev.quantity + 1,
+        priceAtAddition: productPrice
+      }
+    }));
+
     try {
       await dispatch(addItemToCart({
         userId: user?.id,
@@ -114,40 +125,79 @@ const RemovwcartLoading  = useSelector(state => state.cart.itemStatus[itemProduc
         quantity: 1,
       })).unwrap();
     } catch (error) {
+      // بازگردانی در صورت خطا
+      setLocalCartState(prev => ({
+        ...prev,
+        isInCart: prev.quantity > 0,
+        quantity: Math.max(0, prev.quantity),
+        item: prev.quantity > 0 ? prev.item : null
+      }));
       console.error("خطا در افزودن به سبد خرید:", error);
     }
-  }, [product, user?.id, token, navigate, dispatch, cartLoading]);
+  }, [product, user?.id, token, navigate, dispatch, cartLoading, productPrice]);
 
-  const handleRemoveFromCart = useCallback(async (e) => {
+  // کاهش تعداد در سبد خرید با به‌روزرسانی فوری
+  const handleDecreaseQuantity = useCallback(async (e) => {
     e.stopPropagation();
     e.preventDefault();
     
     if (!token || cartLoading) return;
     
+    // به‌روزرسانی فوری UI
+    setLocalCartState(prev => ({
+      ...prev,
+      quantity: Math.max(0, prev.quantity - 1),
+      isInCart: prev.quantity > 1
+    }));
+
     try {
-        await dispatch(addItemToCart({
-          userId: user?.id,
-          productId: product?._id,
-          quantity: -1,
-        })).unwrap();
+      await dispatch(addItemToCart({
+        userId: user?.id,
+        productId: product?._id,
+        quantity: -1,
+      })).unwrap();
     } catch (error) {
+      // بازگردانی در صورت خطا
+      setLocalCartState(prev => ({
+        ...prev,
+        quantity: prev.quantity + 1,
+        isInCart: true
+      }));
       console.error("خطا در کاهش تعداد محصول:", error);
     }
-  }, [product, user?.id, token, dispatch, cartLoading, cartQuantity]);
+  }, [product?._id, user?.id, token, dispatch, cartLoading]);
 
-  const handleRemoveItem = useCallback(async (itemId) => {
-    try {
-      await dispatch(removeItemFromCart(itemId));
-    } catch (error) {
-      console.error('Error removing item:', error);
-    }
-  }, [dispatch]);
-
-
-  const renderStockStatus = useCallback(() => {
-    if (!product?.stock) return null;
+  // حذف کامل از سبد خرید
+  const handleRemoveItem = useCallback(async (e) => {
+    e.stopPropagation();
+    e.preventDefault();
     
-    const stock = parseInt(product.stock);
+    if (!token || cartLoading || !localCartState.item) return;
+    
+    // به‌روزرسانی فوری UI
+    setLocalCartState({
+      isInCart: false,
+      quantity: 0,
+      item: null
+    });
+
+    try {
+      await dispatch(removeItemFromCart(localCartState.item._id)).unwrap();
+    } catch (error) {
+      // بازگردانی در صورت خطا
+      setLocalCartState({
+        isInCart: true,
+        quantity: localCartState.quantity,
+        item: localCartState.item
+      });
+      console.error('خطا در حذف محصول:', error);
+    }
+  }, [localCartState, dispatch, cartLoading, token]);
+
+  // وضعیت موجودی محصول
+  const renderStockStatus = useCallback(() => {
+    const stock = parseInt(product?.stock || 0);
+    
     if (stock <= 0) {
       return (
         <Chip 
@@ -157,7 +207,9 @@ const RemovwcartLoading  = useSelector(state => state.cart.itemStatus[itemProduc
           sx={{ mr: 1, mb: 1 }} 
         />
       );
-    } else if (stock < 5) {
+    }
+    
+    if (stock < 5) {
       return (
         <Chip 
           label={`تنها ${stock} عدد باقی مانده`} 
@@ -167,23 +219,22 @@ const RemovwcartLoading  = useSelector(state => state.cart.itemStatus[itemProduc
         />
       );
     }
+    
     return null;
   }, [product?.stock]);
 
-  const getPrice = useCallback(() => {
-    const price = product?.price?.$numberDecimal || product?.price || 0;
-    return new Intl.NumberFormat("fa-IR").format(parseFloat(price)) + " تومان";
-  }, [product?.price]);
+  // مدیریت خطای تصویر
+  const handleImageError = useCallback(() => setImageError(true), []);
 
-  const handleCardClick = useCallback((product) => {
+  // مدیریت کلیک روی کارت محصول
+  const handleCardClick = useCallback(() => {
     navigate(`/productPage/${product?._id}`);
   }, [product?._id, navigate]);
 
-  const handleImageError = useCallback(() => setImageError(true), []);
-
+  // نمایش اسکلت در حالت لودینگ
   if (loading) {
     return (
-      <CardActionArea className={`Card ${ClassName}`} sx={{ position: "relative", height: 400, width: 250, borderRadius: "0px" }}>
+      <CardActionArea className={`card ${ClassName}`} sx={skeletonStyles}>
         <Skeleton variant="rectangular" height={200} />
         <CardContent>
           <Skeleton variant="text" width="60%" />
@@ -194,114 +245,63 @@ const RemovwcartLoading  = useSelector(state => state.cart.itemStatus[itemProduc
     );
   }
 
+  // محاسبه قیمت کل برای این محصول
+  const totalPrice = localCartState.item 
+    ? localCartState.item.priceAtAddition * localCartState.quantity 
+    : productPrice * localCartState.quantity;
+
   return (
     <CardActionArea
       className={`Card ${ClassName}`}
-      sx={{
-        position: "relative",
-        maxHeight: "max-content",
-        boxShadow: "none",
-        padding: "5px",
-        display: "flex",
-        width: isMobile ? '100%' : '250px',
-        flexDirection: "column",
-        transition: "transform 0.2s, box-shadow 0.2s",
-        "&:hover": {
-          transform: "translateY(-4px)",
-          background: "linear-gradient(45deg, #FFA05C, #FF7B54)",
-          ">:nth-child(3)": {
-            "*": {
-              color: "#fff",
-            }
-          }
-        },
-      }}
-      onClick={()=> handleCardClick(product)}
+      sx={cardStyles}
+      onClick={handleCardClick}
     >
-      {/* Favorite Button */}
+      {/* دکمه علاقه‌مندی‌ها */}
       <Tooltip title={isFavorite ? "حذف از علاقه‌مندی‌ها" : "افزودن به علاقه‌مندی‌ها"}>
         <IconButton
           aria-label="toggle favorite"
           onClick={handleLike}
-          disabled={likeLoading}
-          sx={{
-            position: "absolute",
-            top: 1,
-            right: 1,
-            zIndex: 1,
-            color: "#fff",
-            display: "flex",
-            alignItems: "center",
-            padding: "5px 10px",
-            background: "linear-gradient(45deg, #FFA05C, #FF7B54)",
-            borderRadius: "5px"
-          }}
+          sx={favoriteButtonStyles}
         >
-          {likeLoading ? (
-            <CircularProgress size={20} color="#fff" />
-          ) : isFavorite ? (
-            <FavoriteIcon
-              sx={{
-                transform: isAnimating ? 'scale(1.3)' : 'scale(1)',
-                transition: 'transform 0.3s ease',
-                color: isAnimating ? '#ff4081' : 'inherit'
-              }}
-            />
-          ) : (
-            <FavoriteBorderIcon />
-          )}
           <Typography variant="body2" component="div" sx={{ ml: 0.5 }}>
             {likeCount}
           </Typography>
+          { isFavorite ? (
+            <FavoriteIcon sx={favoriteIconStyles(isAnimating)} />
+          ) : (
+            <FavoriteBorderIcon />
+          )}
         </IconButton>
       </Tooltip>
 
-      {/* Product Image */}
-      <CardActionArea className="img" sx={{ background: "#fff", borderRadius: "8px" }}>
+      {/* تصویر محصول */}
+      <CardActionArea className="img" sx={imageContainerStyles}>
         <CardMedia
           component="img"
           height={isMobile ? "150px" : "200px"}
           src={imageError ? _default : `${Api_Url}/${product?.images?.[0]}`}
           alt={product?.name}
-          sx={{ objectFit: "contain", padding: "5px" }}
+          sx={imageStyles}
           onError={handleImageError}
+          placeholder="blur"
+          loading="lazy"
         />
       </CardActionArea>
 
-      {/* Product Content */}
-      <CardContent
-        sx={{
-          flexGrow: 1,
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-between",
-          padding: "5px",
-          width: "100%"
-        }}
-      >
-        <Box>
-          <Typography
-            variant="body2"
-            component="div"
-            sx={{
-              mb: 1,
-              fontWeight: 600,
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-              display: "-webkit-box",
-              WebkitLineClamp: 1,
-              WebkitBoxOrient: "vertical",
-            }}
-          >
-            {product?.name || "بدون عنوان"}
-          </Typography>
-        </Box>
-
+      {/* محتوای محصول */}
+      <CardContent sx={contentStyles}>
+        {/* عنوان محصول */}
+        <Typography
+          variant="body2"
+          component="div"
+          sx={titleStyles}
+        >
+          {product?.name || "بدون عنوان"}
+        </Typography>
+        
+        {/* وضعیت موجودی و دسته‌بندی */}
         <Box sx={{ mt: 1 }}>
-          {/* Stock Status */}
           {renderStockStatus()}
-          
-          {/* Category Chips */}
           <Chip
             label={`${product?.category?.name || "بدون دسته‌بندی"}`}
             size="small"
@@ -313,70 +313,37 @@ const RemovwcartLoading  = useSelector(state => state.cart.itemStatus[itemProduc
             sx={{ mr: 1, mb: 1 }}
           />
         </Box>
-
-        {/* Price and Cart Button */}
-        <Box
-          sx={{
-            mt: 2,
-            display: "flex",
-            flexDirection:"column"
-          }}
-        >
-          <Typography variant="body2" sx={{ p: 1, color: "#FFA05C", fontWeight: "bold" }}>
-            {getPrice()}
+        
+        {/* قیمت و مدیریت سبد خرید */}
+        <Box sx={cartSectionStyles}>
+          <Typography variant="body2" sx={priceStyles}>
+            {formatPrice(productPrice)}
           </Typography>
 
-          {isInCart ? (
-            <Box sx={{ 
-              display: 'flex', 
-              alignItems: 'center',
-              gap: 0.5,
-              background: "linear-gradient(45deg, #FFA05C, #FF7B54)",
-              borderRadius: '20px',
-              padding: '2px 6px',
-              color: '#fff',
-              zIndex:10,
-              padding:"5px 10px",
-              alignSelf:"flex-end",
-              m:1
-            }}>
-                <IconButton
-                aria-label="حذف محصول"
-                onClick={() => handleRemoveItem(itemProduct?._id)}
-                disabled={cartLoading}
-                size="small"
-                sx={{ 
-                  color: '#fff',
-                  padding: '4px',
-                  '&:hover': { 
-                    backgroundColor: 'rgba(255, 255, 255, 0.1)' 
-                  }
-                }}
-              >
-                {RemovwcartLoading === "loading" ? <CircularProgress size={24} color="#fff" /> : <Delete fontSize="small" />}
-              </IconButton>
+          {localCartState.isInCart ? (
+            <Box sx={cartControlsStyles}>
               <IconButton
-                aria-label="کاهش تعداد"
-                onClick={handleRemoveFromCart}
+                aria-label="حذف محصول"
+                onClick={handleRemoveItem}
                 disabled={cartLoading}
                 size="small"
-                sx={{ 
-                  color: '#fff',
-                  padding: '4px',
-                  '&:hover': { 
-                    backgroundColor: 'rgba(255, 255, 255, 0.1)' 
-                  }
-                }}
+                sx={cartIconStyles}
               >
-                  <RemoveIcon fontSize="small" />
+                 <Delete fontSize="small" />
               </IconButton>
               
-              <Typography variant="body2" sx={{ 
-                minWidth: '20px', 
-                textAlign: 'center',
-                fontWeight: 'bold'
-              }}>
-               {cartLoading ? <CircularProgress size={20} color="#fff" /> : cartQuantity}
+              <IconButton
+                aria-label="کاهش تعداد"
+                onClick={handleDecreaseQuantity}
+                disabled={cartLoading || localCartState.quantity <= 1}
+                size="small"
+                sx={cartIconStyles}
+              >
+                <RemoveIcon fontSize="small" />
+              </IconButton>
+              
+              <Typography variant="body2" sx={quantityStyles}>
+                { localCartState.quantity}
               </Typography>
               
               <IconButton
@@ -384,13 +351,7 @@ const RemovwcartLoading  = useSelector(state => state.cart.itemStatus[itemProduc
                 onClick={handleAddToCart}
                 disabled={cartLoading}
                 size="small"
-                sx={{ 
-                  color: '#fff',
-                  padding: '4px',
-                  '&:hover': { 
-                    backgroundColor: 'rgba(255, 255, 255, 0.1)' 
-                  }
-                }}
+                sx={cartIconStyles}
               >
                 <AddIcon fontSize="small" />
               </IconButton>
@@ -401,33 +362,155 @@ const RemovwcartLoading  = useSelector(state => state.cart.itemStatus[itemProduc
                 aria-label="افزودن به سبد خرید"
                 onClick={handleAddToCart}
                 disabled={cartLoading}
-                sx={{ 
-                  p: 1, 
-                  color: "#fff", 
-                  background: "linear-gradient(45deg, #FFA05C, #FF7B54)",
-                  alignSelf:"flex-end",
-                  '&:hover': {
-                    background: "linear-gradient(45deg, #FF7B54, #FFA05C)"
-                  },
-                  '&:disabled': {
-                    background: "#e0e0e0",
-                    color: "#9e9e9e"
-                  }
-                }}
+                sx={addToCartButtonStyles}
               >
-                {cartLoading ? (
-                  <CircularProgress size={24} color="#fff" />
-                ) : (
-                  <ShoppingCartIcon fontSize="medium" sx={{padding:"2px"}} />
-                )}
+                <ShoppingCartIcon fontSize="medium" sx={{ padding: "2px" }} />
               </IconButton>
             </Tooltip>
           )}
-          {totalPrice ? formatPrice(totalPrice) : null}
+          
+          {localCartState.isInCart && (
+            <Typography variant="body2" sx={totalPriceStyles}>
+              {formatPrice(totalPrice)}
+            </Typography>
+          )}
         </Box>
       </CardContent>
     </CardActionArea>
   );
 };
 
-export default React.memo(ProductCard);
+// استایل‌ها
+const skeletonStyles = { 
+  position: "relative", 
+  height: 400, 
+  width: 250, 
+  borderRadius: "0px" 
+};
+
+const cardStyles = {
+  position: "relative",
+  maxHeight: "max-content",
+  boxShadow: "none",
+  padding: "5px",
+  display: "flex",
+  width: { xs: '100%', sm: '250px' },
+  flexDirection: "column",
+  transition: "transform 0.2s, box-shadow 0.2s",
+  "&:hover": {
+    transform: "translateY(-4px)",
+    background:  "#52575D",
+    ">:nth-child(3)": {
+      "*": { color: "#fff" }
+    }
+  },
+};
+
+const favoriteButtonStyles = {
+  position: "absolute",
+  top: 1,
+  right: 1,
+  zIndex: 1,
+  color: "#fff",
+  display: "flex",
+  alignItems: "center",
+  padding: "5px 10px",
+  background: "#52575D",
+  borderRadius: "5px"
+};
+
+const favoriteIconStyles = (isAnimating) => ({
+  transform: isAnimating ? 'scale(1.1)' : 'scale(1)',
+  transition: '.5s ease',
+  color: isAnimating ? '#ff4081' : 'inherit'
+});
+
+const imageContainerStyles = { 
+  background: "#fff", 
+  borderRadius: "8px" 
+};
+
+const imageStyles = { 
+  objectFit: "contain", 
+  padding: "5px" 
+};
+
+const contentStyles = {
+  flexGrow: 1,
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "space-between",
+  padding: "5px",
+  width: "100%"
+};
+
+const titleStyles = {
+  mb: 1,
+  fontWeight: 600,
+  overflow: "hidden",
+  textOverflow: "ellipsis",
+  display: "-webkit-box",
+  WebkitLineClamp: 1,
+  WebkitBoxOrient: "vertical",
+};
+
+const cartSectionStyles = {
+  mt: 2,
+  display: "flex",
+  flexDirection: "column"
+};
+
+const priceStyles = { 
+  p: 1, 
+  color: "#52575D", 
+  fontWeight: "bold" 
+};
+
+const cartControlsStyles = {
+  display: 'flex', 
+  alignItems: 'center',
+  gap: 0.5,
+  background: "#52575D",
+  borderRadius: '20px',
+  padding: '5px 10px',
+  color: '#fff',
+  alignSelf: "flex-end",
+  m: 1
+};
+
+const cartIconStyles = { 
+  color: '#fff',
+  padding: '4px',
+  '&:hover': { 
+    backgroundColor: 'rgba(255, 255, 255, 0.1)' 
+  }
+};
+
+const quantityStyles = { 
+  minWidth: '20px', 
+  textAlign: 'center',
+  fontWeight: 'bold'
+};
+
+const totalPriceStyles = {
+  alignSelf: "flex-end",
+  fontSize: "0.8rem",
+  color: "#666",
+  mt: 0.5
+};
+
+const addToCartButtonStyles = { 
+  p: 1, 
+  color: "#fff", 
+  background: "#52575D",
+  alignSelf: "flex-end",
+  '&:hover': {
+    background: "#52575D"
+  },
+  '&:disabled': {
+    background: "#e0e0e0",
+    color: "#9e9e9e"
+  }
+};
+
+export default memo(ProductCard);

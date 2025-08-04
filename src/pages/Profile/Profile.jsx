@@ -120,7 +120,7 @@ const Profile = () => {
   return (
     <ProfileContainer>
       <Box sx={{ width: "100%" }}>
-        <Box sx={{ display: "flex", flexDirection: isMobile ? "column" : "row" }}>
+        <Box sx={{ display: "flex", flexDirection: "column" }}>
           <ProfileSection />
           <ContentSection
             activeTab={activeTab}

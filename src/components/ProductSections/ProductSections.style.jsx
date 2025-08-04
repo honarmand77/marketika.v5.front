@@ -10,6 +10,7 @@ export const GridContainer = styled.div`
   grid-template-columns: repeat( auto-fit, minmax(580px, 1fr) );
   width:100%;
   padding:1vw;
+  background:linear-gradient(to top, #52575D10, transparent);
   @media (max-width: 768px) {
 padding:0;
 grid-template-columns: 1fr;

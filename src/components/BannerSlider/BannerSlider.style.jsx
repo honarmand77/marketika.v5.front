@@ -11,8 +11,7 @@ width: 100%;
   flex-direction:row;
   justify-content:center;
   padding:5px;
-
-max-height:calc(500px - 10vh + 20vw);
+max-height:calc(500px - 10vh + 25vw);
 .css-1m9128y{
   display:none;
 }
@@ -20,7 +19,7 @@ max-height:calc(500px - 10vh + 20vw);
 
 .catswip{
   width:max-content;
-height:calc(150px - 10vh + 20vw);
+height:calc(200px - 10vh + 20vw);
   @media (max-width: 780px){
     width:100vw;
 height:max-content;
@@ -54,13 +53,13 @@ export const CategoryCard = styled.div`
   border-radius: 10px;
   width:100%;
   padding:5px;
-  height:100%;
+  height:max-content;
   display:grid;
     cursor:grab;
   align-items:flex-start;
   transition: transform 0.3s, background-color 0.3s;
   user-select: none;
-  max-height:200px ;
+  max-height:200px;
   &:hover {
     transform: scale(1.05);
   }

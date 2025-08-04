@@ -56,10 +56,12 @@ transform:scale(1.2);
 @media (max-width: 768px) {
 
 position:fixed;
-top: calc(100dvh - 60px);
+top: calc(100dvh - 50px);
 width:calc(100% - 10px);
 justify-content:space-between;
 padding:0 10px;
+background:#fff;
+
 &>:last-child{
 position:fixed;
 top: 2px;

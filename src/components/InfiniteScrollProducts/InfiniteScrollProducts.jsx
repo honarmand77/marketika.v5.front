@@ -36,8 +36,9 @@ function InfiniteScrollProducts() {
   }, [products]);
 
   return (
-    <>
-      <Box sx={{width:"max-content"}}>
+  
+    <Box sx={{background: 'linear-gradient(135deg, #52575D10 0%, #52575D10 50%)'}}>
+      <Box sx={{ width: "100%", justifyContent:"center" ,display:"flex" }}>
         <Tabs sx={{width:"max-content"}} value="محصولات پیشنهادی" aria-label="دسته بندی محصولات">
           <Tab label="محصولات پیشنهادی" value="محصولات پیشنهادی" />
         </Tabs>
@@ -123,7 +124,7 @@ function InfiniteScrollProducts() {
           )}
         </Box>
       </Swipers>
-    </>
+    </Box>
   );
 }
 

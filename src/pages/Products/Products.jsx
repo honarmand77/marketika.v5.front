@@ -285,7 +285,7 @@ export default function Products() {
               key={catId}
               label={category?.name}
               onDelete={() => handleCategoryChange(catId)}
-              sx={{ background: 'linear-gradient(45deg, #FFA05C, #FF7B54)', color: 'white', p: 1 }}
+              sx={{ color: 'white', p: 1 }}
             />
           );
         })}
@@ -296,7 +296,7 @@ export default function Products() {
               key={subId}
               label={`${subCategory?.categoryName} - ${subCategory?.name}`}
               onDelete={() => handleSubCategoryChange(subId)}
-              sx={{ background: 'linear-gradient(45deg, #FFA05C, #FF7B54)', color: 'white', p: 1 }}
+              sx={{ background: '#393E46', color: 'white', p: 1 }}
             />
           );
         })}
@@ -307,7 +307,7 @@ export default function Products() {
               key={bucketId}
               label={bucket?.label}
               onDelete={() => handlePriceBucketSelect(bucketId)}
-              sx={{ background: 'linear-gradient(45deg, #FFA05C, #FF7B54)', color: 'white', p: 1 }}
+              sx={{ background: '#393E46', color: 'white', p: 1 }}
             />
           );
         })}
@@ -322,7 +322,7 @@ export default function Products() {
             bottom: isMobile ? '80px' : '30px',
             right: '20px',
             zIndex: 1005,
-            background:"linear-gradient(45deg, #FFA05C, #FF7B54)",
+            background:"#393E46",
             boxShadow:0,
             padding:"2px 10px",
             borderRadius:"5px",
@@ -350,13 +350,13 @@ export default function Products() {
           height: isMobile ? '70vh' : '100vh',
           right: !isMobile ? (filterPanelOpen ? 0 : -300) : 0,
           bottom: isMobile ? (filterPanelOpen ? 0 : -1000) : 0,
-          transition: 'all 0.3s ease',
+          transition: 'all 0.2s ease-in',
           overflowY: 'auto',
         }}
       >
         <Box sx={{ 
           p: 1, 
-          background:"linear-gradient(45deg, #FFA05C, #FF7B54)",
+          background:" #393E46",
           color: 'white',
           display: 'flex',
           justifyContent: 'space-between',
@@ -590,14 +590,7 @@ export default function Products() {
           </Box>
         ) : (
           filteredProducts.map(product => (
-            <motion.div
-              key={product._id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.1 }}
-            >
               <ProductCard product={product} />
-            </motion.div>
           ))
         )}
       </Box>

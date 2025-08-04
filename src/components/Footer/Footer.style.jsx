@@ -61,7 +61,7 @@ export const FooterContainer = styled.div`
     align-items: center;
     justify-content: center;
     gap: 8px;
-    background: linear-gradient(45deg, #FFA05C, #FF7B54);
+    background:  #393E46;
     color: white;
     border: none;
     padding: 12px 20px;
@@ -74,7 +74,7 @@ export const FooterContainer = styled.div`
     
     &:hover {
       transform: translateY(-3px);
-      box-shadow: 0 6px 20px rgba(255, 123, 84, 0.4);
+      box-shadow: 0 6px 20px #393E4690;
       &::after {
         opacity: 1;
       }
@@ -113,14 +113,14 @@ export const FooterContainer = styled.div`
       display: flex;
       align-items: center;
       gap: 8px;
-      color: #FF7B54;
+      color: #393E46;
       text-decoration: none;
       transition: all 0.3s ease;
       position: relative;
       padding: 5px 0;
       
       &:hover {
-        color: #FF5E62;
+        color: #393E46;
         transform: translateY(-2px);
         
         &::after {
@@ -135,7 +135,7 @@ export const FooterContainer = styled.div`
         left: 0;
         width: 0;
         height: 2px;
-        background: #FF5E62;
+        background: #393E46;
         transition: width 0.3s ease;
       }
 

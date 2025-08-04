@@ -105,7 +105,7 @@ const EmptyCart = memo(({ isAuthenticated }) => {
               gap: "5px",
               color: "#fff",
               boxShadow: 0,
-              background: "linear-gradient(45deg, #FFA05C, #FF7B54)"
+              background: " #52575D"
             }}
           >
             مشاهده محصولات
@@ -226,27 +226,20 @@ const cartItems = useSelector(selectCartItems);
 
       <Product_Container container spacing={2}>
           {cartItems.map((item) => (
-                            <motion.div
-                              key={item.product._id}
-                              initial={{ opacity: 0, y: 20 }}
-                              animate={{ opacity: 1, y: 0 }}
-                              transition={{ duration: 0.3 }}
-                            >
                               <ProductCard 
                                 product={item.product} 
                                 loading={loading}
                               />
-                            </motion.div>
           ))}
         </Product_Container>
         </Grid>
         <Paper sx={{ 
           boxShadow: 0,
-          p: 2,
+          p: 1,
           width: "100%",
           background: "#fcfcfc",
           position: "fixed",
-          bottom: isMobile ? "70px" : "0",
+          bottom: isMobile ? "50px" : "0",
           zIndex: 999
         }}>
           <Box sx={{ 
@@ -286,7 +279,9 @@ const cartItems = useSelector(selectCartItems);
                   height: 50,
                   display: 'flex', 
                   gap: "5px", 
-                  color: "#fff" 
+                  color: "#fff" ,
+                  boxShadow:0
+
                 }}
               >
                 {loading ? <CircularProgress size={24} /> : 'تکمیل سفارش'}

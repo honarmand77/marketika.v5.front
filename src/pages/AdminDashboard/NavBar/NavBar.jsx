@@ -33,10 +33,6 @@ export default function NavBar() {
 
   return (
     <NavBarContainer className={`AuthStep ${open ? 'open' : 'close'}`}>
-      <IconContainer className="open">
-        <Logo />
-        <h1>مارکتیکا</h1>
-      </IconContainer>
 
       <MenuContainer>
         <div className="humIcon">

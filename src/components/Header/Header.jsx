@@ -107,7 +107,7 @@ export default function Header() {
         <h1 onClick={() => navigate("/")} style={{ cursor: "pointer" }}>مارکتیکا</h1>
       </IconContainer>
 
-      <SearchContainer isFocused={isSearchFocused}>
+      <SearchContainer $isFocused={isSearchFocused}>
         <form onSubmit={handleSearch}>
           <TextField
             fullWidth
@@ -143,7 +143,7 @@ export default function Header() {
         </form>
       </SearchContainer>
 
-      <ButtonContainer>
+      <ButtonContainer className="AuthStep">
         <Buttons 
           Lable="خانه" 
           style={{ color: isDarkMode ? "#fff" : "#444" }} 

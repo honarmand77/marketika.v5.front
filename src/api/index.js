@@ -1,7 +1,7 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 import { encryptData, decryptData } from "../utils/encryption";
-export const Api_Url = "http://localhost:5000"
+export const Api_Url = "https://marketika-v5-back.onrender.com"
 const API_BASE_URL = `${Api_Url}/api/`;
 
 const api = axios.create({
